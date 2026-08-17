@@ -1,5 +1,6 @@
 SHELL   := /bin/bash
 VENV    := .venv
+PYTHON  ?= $(shell command -v python3.13 || command -v python3.12 || command -v python3.11 || command -v python3)
 PY      := $(VENV)/bin/python
 PIP     := $(VENV)/bin/pip
 DBT     := $(VENV)/bin/dbt
@@ -20,7 +21,12 @@ help:  ## danh sách lệnh
 	@echo ""
 
 setup:  ## venv + thư viện + sinh dữ liệu (chạy một lần)
-	@test -d $(VENV) || python3 -m venv $(VENV)
+	@$(PYTHON) -c 'import sys; assert (3, 11) <= sys.version_info[:2] < (3, 14), "Cần Python 3.11, 3.12 hoặc 3.13 (Python 3.14 chưa được dbt hỗ trợ)."'
+	@if [ -x "$(PY)" ] && ! "$(PY)" -c 'import sys; raise SystemExit(not ((3, 11) <= sys.version_info[:2] < (3, 14)))'; then \
+	  echo "  .venv đang dùng Python không được dbt hỗ trợ — tạo lại..."; \
+	  rm -rf "$(VENV)"; \
+	fi
+	@test -d $(VENV) || $(PYTHON) -m venv $(VENV)
 	@$(PIP) install -q --upgrade pip
 	@$(PIP) install -q -r requirements.txt
 	@$(PY) seed/generate.py

@@ -31,6 +31,8 @@
 
 {{ config(
     materialized     = 'incremental',
+    unique_key       = ['event_date', 'customer_id'],
+    incremental_strategy = 'merge',
     on_schema_change = 'fail'
 ) }}
 
@@ -49,7 +51,9 @@ select
 from {{ ref('silver_events') }}
 
 {% if is_incremental() %}
-where event_date > (select max(event_date) from {{ this }})
+-- Tính lại ngày hiện tại và ba ngày trước để nhận event đến muộn.
+where event_date >= date '{{ var("run_date") }}' - interval 3 day
+  and event_date <  date '{{ var("run_date") }}' + interval 1 day
 {% endif %}
 
 group by 1, 2, 3, 4

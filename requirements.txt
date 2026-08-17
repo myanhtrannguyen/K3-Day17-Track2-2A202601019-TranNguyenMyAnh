@@ -1,5 +1,7 @@
 # LAB 17 — Data Pipeline Engineering
 # Toàn bộ lab chạy local, không cần Docker, không cần cloud.
 duckdb>=1.4,<2
-dbt-core>=1.9,<2
-dbt-duckdb>=1.9,<2
+# dbt 1.12+ pulls the optional experimental 2.0 parser during installation.
+# This lab uses the stable 1.11 API and does not need that parser.
+dbt-core>=1.9,<1.12
+dbt-duckdb>=1.9,<1.12

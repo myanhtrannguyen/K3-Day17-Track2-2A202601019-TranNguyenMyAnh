@@ -44,7 +44,7 @@ Sau lab, bạn phải thực hiện được:
 
 ## 3. Điều kiện cần
 
-- **Python 3.11+** và `make`. Không cần Docker, không cần tài khoản cloud.
+- **Python 3.11–3.13** và `make`. Không cần Docker, không cần tài khoản cloud.
 - SQL cơ bản. **Không** yêu cầu kinh nghiệm dbt trước đó.
 - Đã xem slide Ngày 17, đặc biệt phần Transform và Engine.
 
