@@ -142,6 +142,6 @@ nhất của cùng một `event_id`.
 
 | Nhiệm vụ | Khi tiếp nhận một hệ thống chưa quen, tôi sẽ kiểm tra điều này trước tiên |
 |---|---|
-| 1 | |
-| 2 | |
-| 3 | |
+| 1 | Xác định grain, natural key và SQL materialization thực tế (`INSERT`, `MERGE` hay `DELETE+INSERT`); sau đó chạy lại cùng input để kiểm tra idempotence. |
+| 2 | So sánh `event_time` với thời điểm dữ liệu đến kho, đo percentile độ trễ và đối chiếu lookback window với grain/key của aggregate. |
+| 3 | Phân biệt schema evolution với dữ liệu hỏng; giữ Bronze thô, chuẩn hoá ở Silver, quarantine record lỗi và kiểm tra cả contract kiểu dữ liệu lẫn test miền giá trị. |
